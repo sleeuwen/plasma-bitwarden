@@ -36,7 +36,7 @@ Item {
             for (var i = 0; i < list.length; i++) {
                 passwordsModel.append({
                     name: list[i].name,
-                    username: list[i].username,
+                    username: list[i].login && list[i].login.username,
                 })
             }
         }
@@ -46,6 +46,8 @@ Item {
         id: dialogItem
         Layout.minimumWidth: PlasmaCore.Units.gridUnit * 5
         Layout.minimumHeight: PlasmaCore.Units.gridUnit * 5
+        Layout.preferredWidth: 480 * units.devicePixelRatio
+        Layout.preferredHeight: 640 * units.devicePixelRatio
 
         focus: true
 
