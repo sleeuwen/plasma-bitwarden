@@ -19,6 +19,19 @@ ColumnLayout {
                 event.accepted = true;
                 break;
             }
+            case Qt.Key_Enter:
+            case Qt.Key_Return:
+                if (passwordMenu.view.currentIndex >= 0) {
+                    var id = passwordMenu.model.get(passwordMenu.view.currentIndex).id;
+                    if (id) {
+                        // TODO: Copy to clipboard with expiring timer
+                        passwordMenu.view.currentIndex = -1;
+                        if (plasmoid.hideOnWindowDeactivate) {
+                            plasmoid.expanded = false;
+                        }
+                    }
+                }
+                break;
             case Qt.Key_Escape: {
                 if (filter.text != "") {
                     fitler.text = "";

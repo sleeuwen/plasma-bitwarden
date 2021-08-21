@@ -48,16 +48,10 @@ PlasmaComponents.ListItem {
 
                 text: model.name
 
-                textFormat: listItem.allowStyledText ? Text.StyledText : Text.PlainText
                 elide: Text.ElideRight
                 maximumLineCount: 1
 
-                // Even if it's the default item, only make it bold when
-                // there's more than one item in the list, or else there's
-                // only one item and it's bold, which is a little bit weird
-                font.weight: listItem.isDefault && listItem.ListView.view.count > 1
-                                    ? Font.Bold
-                                    : Font.Normal
+                font.weight: Font.Normal
             }
 
             PlasmaComponents3.Label {
@@ -73,10 +67,9 @@ PlasmaComponents.ListItem {
 
                 text: model.username
 
-                textFormat: listItem.allowStyledText ? Text.StyledText : Text.PlainText
                 elide: Text.ElideRight
-                maximumLineCount: subtitleCanWrap ? 9999 : 1
-                wrapMode: subtitleCanWrap ? Text.WordWrap : Text.NoWrap
+                maximumLineCount: 1
+                wrapMode: Text.NoWrap
             }
         }
     }
