@@ -67,6 +67,7 @@ PlasmaComponents3.Page {
                     name: list[i].name,
                     username: list[i].login && list[i].login.username,
                     password: list[i].login && list[i].login.password,
+                    filterText: list[i].name + '|' + (list[i].login && list[i].login.username) + '|' + (list[i].login && list[i].login.uris && list[i].login.uris[0].uri),
                 });
             }
 

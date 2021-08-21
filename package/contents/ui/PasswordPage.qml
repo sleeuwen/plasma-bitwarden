@@ -92,6 +92,7 @@ ColumnLayout {
         id: passwordMenu
         model: PlasmaCore.SortFilterModel {
             sourceModel: passwordsModel
+            filterRole: 'filterText'
             filterRegExp: filter.text
         }
         Layout.fillWidth: true
