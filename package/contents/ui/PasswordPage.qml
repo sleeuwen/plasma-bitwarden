@@ -1,10 +1,10 @@
 import QtQuick 2.4
 import QtQuick.Layouts 1.1
-
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.extras 2.0 as PlasmaExtras
+import com.github.sleeuwen.private.plasmabitwarden 1.0
 
 ColumnLayout {
     Keys.onPressed: {
@@ -24,8 +24,7 @@ ColumnLayout {
                 if (passwordMenu.view.currentIndex >= 0) {
                     var id = passwordMenu.model.get(passwordMenu.view.currentIndex).id;
                     if (id) {
-                        // TODO: Copy to clipboard with expiring timer
-                        passwordMenu.view.currentIndex = -1;
+                        passwordsModel.copyToClipboard(id);
                         if (plasmoid.hideOnWindowDeactivate) {
                             plasmoid.expanded = false;
                         }
@@ -71,12 +70,6 @@ ColumnLayout {
 
                 // Only override delete key behavior to delete list items if it would do nothing
                 Keys.enabled: filter.text.length == 0 || filter.cursorPosition == filter.length
-                Keys.onDeletePressed: {
-                    let passwordItemIndex = passwordMenu.view.currentIndex
-                    if (passwordItemIndex != -1) {
-                        // TODO: Remove item
-                    }
-                }
 
                 Connections {
                     target: main
@@ -91,12 +84,36 @@ ColumnLayout {
     Menu {
         id: passwordMenu
         model: PlasmaCore.SortFilterModel {
-            sourceModel: passwordsModel
+            id: sortFilterModel
+            sourceModel: PasswordsModel { id: passwordsModel }
             filterRole: 'filterText'
             filterRegExp: filter.text
         }
         Layout.fillWidth: true
         Layout.fillHeight: true
         Layout.topMargin: PlasmaCore.Units.smallSpacing
+
+        onItemSelected: {
+            var item = sortFilterModel.get(index);
+            passwordsModel.copyToClipboard(item.id);
+
+            if (plasmoid.hideOnWindowDeactivate) {
+                plasmoid.expanded = false;
+            }
+        }
+    }
+
+    Connections {
+        target: plasmoid
+
+        function onExpandedChanged(expanded) {
+            if (expanded) {
+                filter.focus = true;
+                passwordMenu.view.currentIndex = -1;
+            } else {
+                filter.text = "";
+                passwordMenu.view.currentIndex = -1;
+            }
+        }
     }
 }

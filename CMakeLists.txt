@@ -1,19 +1,31 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(plasma-bitwarden)
+project(plasma-plasmabitwarden)
  
 find_package(ECM 1.4.0 REQUIRED NO_MODULE)
-
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
 
 include(KDEInstallDirs)
 include(KDECMakeSettings)
-include(KDECompilerSettings)
+include(KDECompilerSettings NO_POLICY_SCOPE)
+include(FeatureSummary)
 
-find_package(KF5Plasma REQUIRED)
-find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Quick)
-find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS Plasma)
+find_package(KF5 REQUIRED COMPONENTS
+    Plasma
+    I18n
+    Wallet
+)
 
+find_package(Qt5 CONFIG REQUIRED COMPONENTS
+    Qml
+    Gui
+    Core
+)
+
+# plasmoid
 plasma_install_package(package com.github.sleeuwen.plasmabitwarden)
 
+# qml extension plugin
 add_subdirectory(plugin)
+
+feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)

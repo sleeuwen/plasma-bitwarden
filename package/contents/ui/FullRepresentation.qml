@@ -10,6 +10,7 @@ import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.extras 2.0 as PlasmaExtras
+import com.github.sleeuwen.private.plasmabitwarden 1.0
 
 PlasmaComponents3.Page {
     id: main
@@ -27,6 +28,20 @@ PlasmaComponents3.Page {
 
     Keys.forwardTo: [stack.currentPage]
 
+    BitwardenVault {
+        id: vault
+
+        onStatusChanged: {
+            if (vault.status == "loading") {
+                stack.replace(stack.initialPage, null, true);
+            } else if (vault.status == "locked") {
+                stack.replace(loginPage, null, true);
+            } else if (vault.status == "unlocked") {
+                stack.replace(passwordPage, null, true);
+            }
+        }
+    }
+
     PlasmaComponents.PageStack {
         id: stack
         anchors.fill: parent
@@ -42,46 +57,15 @@ PlasmaComponents3.Page {
         }
     }
 
+    Component {
+        id: loginPage
+        LoginPage {
+            anchors.fill: parent
+        }
+    }
+
     Component.onCompleted: {
         // Change settings here
-    }
-
-    ListModel {
-        id: passwordsModel
-    }
-
-    PlasmaCore.DataSource {
-        id: passwordSource
-        engine: "executable"
-        connectedSources: ["bw list items --session '***'"]
-
-        onNewData: {
-            var stdout = data["stdout"]
-            passwordsModel.clear()
-            var list = JSON.parse(stdout)
-            for (var i = 0; i < list.length; i++) {
-                if (!list[i].login) continue;
-
-                passwordsModel.append({
-                    id: list[i].id,
-                    name: list[i].name,
-                    username: list[i].login && list[i].login.username,
-                    password: list[i].login && list[i].login.password,
-                    filterText: list[i].name + '|' + (list[i].login && list[i].login.username) + '|' + (list[i].login && list[i].login.uris && list[i].login.uris[0].uri),
-                });
-            }
-
-            stack.replace(passwordPage, null, true);
-        }
-    }
-
-    Connections {
-        target: plasmoid
-
-        function onExpandedChanged(expanded) {
-            if (expanded && stack.currentPage.filter) {
-                stack.currentPage.filter.text = "";
-            }
-        }
+        vault.loadVaultStatus();
     }
 }

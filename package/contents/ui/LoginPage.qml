@@ -12,12 +12,9 @@ Item {
     ColumnLayout {
         anchors.centerIn: parent
 
-        PlasmaComponents.BusyIndicator {
-            Layout.alignment: Qt.AlignHCenter;
+        PlasmaComponents.Label {
+            text: i18n("Vault is locked.");
         }
 
-        PlasmaComponents.Label {
-            text: i18n("Loading...");
-        }
     }
 }

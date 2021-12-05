@@ -13,12 +13,18 @@ PlasmaComponents.ListItem {
 
     enabled: true
 
+    signal itemSelected(var index);
+
     onContainsMouseChanged: {
         if (containsMouse) {
             menuListView.currentIndex = index
         } else {
             menuListView.currentIndex = -1
         }
+    }
+
+    onClicked: {
+        menuItem.itemSelected(index)
     }
 
     Item {

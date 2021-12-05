@@ -13,10 +13,7 @@ PlasmaExtras.ScrollArea {
 
     frameVisible: false
 
-    signal itemSelected(string uuid)
-    signal remove(string uuid)
-    signal edit(string uuid)
-    signal action(string uuid)
+    signal itemSelected(var index)
 
     ListView {
         id: menuListView
@@ -31,6 +28,10 @@ PlasmaExtras.ScrollArea {
 
         delegate: PasswordItemDelegate {
             width: menuListView.width
+
+            onItemSelected: {
+                menu.itemSelected(index);
+            }
         }
 
         PlasmaExtras.PlaceholderMessage {
