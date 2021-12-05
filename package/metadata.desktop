@@ -6,11 +6,11 @@ Icon=lock
 Type=Service
 X-KDE-ServiceTypes=Plasma/Applet
 
-X-KDE-PluginInfo-Author=%{AUTHOR}
-X-KDE-PluginInfo-Email=%{EMAIL}
-X-KDE-PluginInfo-Name=org.kde.plasma.plasmabitwardenqml
+X-KDE-PluginInfo-Author=sleeuwen
+X-KDE-PluginInfo-Email=stephan.vanleeuwen5@gmail.com
+X-KDE-PluginInfo-Name=com.github.sleeuwen.plasmabitwarden
 X-KDE-PluginInfo-Version=1.0
-X-KDE-PluginInfo-Website=https://plasma.kde.org/
+X-KDE-PluginInfo-Website=https://github.com/sleeuwen/plasma-bitwarden
 X-KDE-PluginInfo-Category=Utilities
 X-KDE-PluginInfo-License=LGPL-2.1+
 X-KDE-PluginInfo-EnabledByDefault=true
