@@ -6,6 +6,8 @@
 #include <QAbstractItemModel>
 #include <QProcess>
 
+#include "bitwardenvault.h"
+
 namespace PlasmaBitwarden
 {
 
@@ -39,11 +41,15 @@ public:
 
     Q_INVOKABLE void copyToClipboard(QString id) const;
 
+    Q_PROPERTY(BitwardenVault *vault WRITE setVault REQUIRED);
+
 private slots:
     void readData();
+    void setVault(BitwardenVault *vault);
 
 private:
     QProcess *process;
+    BitwardenVault *vault;
 
     void populate();
 

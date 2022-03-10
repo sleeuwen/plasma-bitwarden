@@ -144,8 +144,17 @@ void PasswordsModel::copyToClipboard(QString id) const
 
 void PasswordsModel::populate()
 {
+    std::cout << "populate" << std::endl;
+    if (this->vault == 0) {
+        std::cout << "null" << std::endl;
+        return;
+    }
+
+    std::cout << "not null" << std::endl;
+    QString sessionKey = this->vault->sessionKey();
+    std::cout << "session key " << sessionKey.toStdString() << std::endl;
     process = new QProcess();
-    QStringList args = { "list", "items", "--nointeraction", "--session", "***" };
+    QStringList args = { "list", "items", "--nointeraction", "--session", sessionKey };
 
     connect(process, SIGNAL(readyReadStandardOutput()), this, SLOT(readData()));
     process->start("bw", args);
@@ -188,4 +197,12 @@ void PasswordsModel::readData() {
     }
 
     endResetModel();
+}
+
+void PasswordsModel::setVault(BitwardenVault* vault)
+{
+    std::cout << "setVault " << (vault == 0 ? "null" : "not null") << std::endl;
+    this->vault = vault;
+    mNodes.clear();
+    this->populate();
 }

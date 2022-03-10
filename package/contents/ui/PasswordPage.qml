@@ -85,7 +85,7 @@ ColumnLayout {
         id: passwordMenu
         model: PlasmaCore.SortFilterModel {
             id: sortFilterModel
-            sourceModel: PasswordsModel { id: passwordsModel }
+            sourceModel: PasswordsModel { id: passwordsModel; vault: vault }
             filterRole: 'filterText'
             filterRegExp: filter.text
         }

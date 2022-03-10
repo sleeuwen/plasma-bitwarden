@@ -20,17 +20,21 @@ public:
     explicit BitwardenVault(QObject *parent = 0);
     ~BitwardenVault();
 
-    QString status() const { return mStatus; };
+    QString status() const { return QString(mStatus); };
+    QString sessionKey() const { return QString(*mSessionKey); };
 
     Q_INVOKABLE void loadVaultStatus();
+    Q_INVOKABLE void unlock(QString password);
 
 Q_SIGNALS:
     void statusChanged();
+    void unlockFailed();
 
 private slots:
     void readVaultStatus();
     void walletOpened(bool ok);
-    //void vaultStatusFinished(int exitCode, QProcess::ExitStatus exitStatus);
+
+    void readUnlockResult(int exitCode, QProcess::ExitStatus status);
 
 private:
     Wallet *mWallet;
@@ -38,6 +42,8 @@ private:
     QString mStatus;
     QProcess *mProcess;
     QString *mSessionKey;
+
+    QProcess *unlockProcess;
 
     void setVaultStatus(QString status);
     void loadKWallet();
